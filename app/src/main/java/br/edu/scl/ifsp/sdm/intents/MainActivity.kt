@@ -3,9 +3,12 @@ package br.edu.scl.ifsp.sdm.intents
 import android.Manifest.permission.CALL_PHONE
 import android.content.Intent
 import android.content.Intent.ACTION_CALL
+import android.content.Intent.ACTION_CHOOSER
 import android.content.Intent.ACTION_DIAL
 import android.content.Intent.ACTION_PICK
 import android.content.Intent.ACTION_VIEW
+import android.content.Intent.EXTRA_INTENT
+import android.content.Intent.EXTRA_TITLE
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Build
@@ -94,9 +97,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.viewMi -> {
-                var url = Uri.parse(activityMainBinding.parameterTv.text.toString())
-                var browserIntent = Intent(ACTION_VIEW, url)
-                startActivity(browserIntent)
+
+                startActivity(browserIntent())
                 true
             }
 
@@ -130,6 +132,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.chooserMi -> {
+                startActivity(
+                    Intent(ACTION_CHOOSER).apply {
+                        putExtra(EXTRA_TITLE, getString(R.string.choose_your_favorite_browser))
+                        putExtra(EXTRA_INTENT,browserIntent())
+                    }
+                )
+
                 true
             }
 
@@ -147,5 +156,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+    private fun browserIntent():Intent{
+        var url = Uri.parse(activityMainBinding.parameterTv.text.toString())
+        return   Intent(ACTION_VIEW, url)
     }
 }
