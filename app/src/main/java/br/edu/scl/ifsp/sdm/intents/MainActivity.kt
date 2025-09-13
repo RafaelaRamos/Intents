@@ -1,6 +1,8 @@
 package br.edu.scl.ifsp.sdm.intents
 
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -52,10 +54,17 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.openActivityMi -> {
+                val parameterIntent = Intent("OPEN_PARAMETER_ACTIVITY_ACTION").apply {
+                    putExtra(PARAMETER_EXTRA, activityMainBinding.parameterTv.text)
+                }
+                parameterArl.launch(parameterIntent)
                 true
             }
 
             R.id.viewMi -> {
+                var url = Uri.parse(activityMainBinding.parameterTv.text.toString())
+                var browserIntent = Intent(ACTION_VIEW, url)
+                startActivity(browserIntent)
                 true
             }
 
